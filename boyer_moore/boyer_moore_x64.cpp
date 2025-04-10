@@ -30,8 +30,11 @@ using namespace std;
 #define SEC6 (SECBASE*6)
 #define SEC7 (SECBASE*7)
 #define SEC8 (TOTALLINES) // Final line of file
+#define FILENAME "file/war_and_peace.txt"
+#define PATTERN "moscow"
 
-#define TESTAMOUNT 10
+
+#define TESTAMOUNT 20
 
 mutex coutMutex; // tracks the logging of the threads that process each section and allows the cout not to get overwritten while threads write at the same time
 
@@ -56,17 +59,16 @@ void runMultipleTests(){
 
     for(int i=0; i< TESTAMOUNT; i++){ 
 
-        cout<<"\nTEST "<<i+1<<" ========================================================\n";
+        cout<<"\nTEST "<<i+1<<"\n";
         auto start = chrono::high_resolution_clock::now(); // Timing the function
     
-        fileSecPartition("war_and_peace.txt");
+        fileSecPartition(FILENAME);
     
         auto end = chrono::high_resolution_clock::now();
     
         auto duration = chrono::duration_cast<chrono::milliseconds>(end-start);
-        cout<<"\t*Total time taken Lenovo Slim 3: "<<duration.count()<<" ms"<<"\n";
+        cout<<"\tTotal time taken Lenovo Slim 3: "<<duration.count()<<" ms"<<"\n";
         avgVec.push_back(duration.count());
-        cout<<"===============================================================";
         }
 
         for(int i=0; i<avgVec.size(); i++){
@@ -107,7 +109,7 @@ int fileSecPartition(string filename) {
     /* calculate final count */
     int finalCount = tc1 + tc2 + tc3 + tc4 + tc5 + tc6 + tc7 + tc8;
 
-    cout << "\n\t*FINAL COUNT: " << finalCount << "\n";
+    cout << "\tFINAL COUNT: " << finalCount << "\n";
 
     return 0;
 }
@@ -198,7 +200,7 @@ void processFileSection(const string &filename, int startLine, int endLine, int 
         lineCount++;
     }
 
-    string pattern = "peace";
+    string pattern = PATTERN; //pattern want to find
 
     while (lineCount < endLine && getline(file, line)) {
         line = toLowercase(line);

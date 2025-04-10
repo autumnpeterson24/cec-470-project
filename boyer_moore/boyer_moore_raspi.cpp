@@ -26,8 +26,11 @@ using namespace std;
 #define SEC2 (SECBASE*2)
 #define SEC3 (SECBASE*3)
 #define SEC4 TOTALLINES // Final line of file
+#define FILENAME "file/war_and_peace.txt"
+#define PATTERN "moscow"
 
-#define TESTAMOUNT 10
+
+#define TESTAMOUNT 20
 
 mutex coutMutex; // tracks the logging of the threads that process each section and allows the cout not to get overwritten while threads write at the same time
 
@@ -53,17 +56,16 @@ void runMultipleTests(){
     vector<int> avgVec;
 
     for(int i=0; i< TESTAMOUNT; i++){
-    cout<<"\nTEST "<<i+1<<" ========================================================\n";
+    cout<<"\nTEST "<<i+1<<"\n";
     auto start = chrono::high_resolution_clock::now(); // Timing the function
 
-    fileSecPartition("war_and_peace.txt");
+    fileSecPartition(FILENAME);
 
     auto end = chrono::high_resolution_clock::now();
 
     auto duration = chrono::duration_cast<chrono::milliseconds>(end-start);
     cout<<"\tTotal time taken Raspberry Pi 5: "<<duration.count()<<" ms"<<"\n";
     avgVec.push_back(duration.count());
-    cout<<"===============================================================";
     } 
     for(int i=0; i<avgVec.size(); i++){
         totalSum += avgVec[i];
@@ -186,7 +188,7 @@ void processFileSection(const string &filename, int startLine, int endLine, int 
         lineCount++;
     }
 
-    string pattern = "peace";
+    string pattern = PATTERN; //word want to find
 
     while (lineCount < endLine && getline(file, line)) {
         line = toLowercase(line);
